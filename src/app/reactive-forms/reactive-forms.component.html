@@ -1,0 +1,274 @@
+<div class="container w-75 bg-light shadow-lg card">
+  <div class="card-header text-center">
+    <h2>Sankar's Reactive Form Example</h2>
+  </div>
+  <div class="card-body">
+    <form
+      class="form"
+      autocomplete="off"
+      [formGroup]="employeeForm"
+      (ngSubmit)="onRegister()"
+    >
+      <label class="form-label" for="username">First Name </label>
+      <input
+        class="form-control"
+        formControlName="firstName"
+        type="text"
+        id="firstname"
+
+      />
+      <p
+        *ngIf="
+          (employeeForm?.get('firstName')?.touched || isSubmit) &&
+          !employeeForm.get('firstName')?.valid
+        "
+        class="text-danger"
+      >
+        *Please enter your first name
+      </p>
+
+      <label class="form-label" for="username">Last Name </label>
+      <input
+        class="form-control"
+        formControlName="lastName"
+        type="text"
+        id="lastname"
+
+      />
+      <p
+        *ngIf="
+          (employeeForm.get('lastName')?.touched || isSubmit) &&
+          !employeeForm.get('lastName')?.valid
+        "
+        class="text-danger"
+      >
+        *Please enter your last name
+      </p>
+
+      <label class="form-label" for="username">Email </label>
+      <input
+        class="form-control"
+        formControlName="email"
+        type="email"
+        id="email"
+
+      />
+      <p
+        *ngIf="
+          (employeeForm.get('email')?.touched || isSubmit) &&
+          !employeeForm.get('email')?.valid
+        "
+        class="text-danger"
+      >
+        *Please enter your email
+      </p>
+
+      <label class="form-label" for="username">Phone </label>
+      <input
+        class="form-control"
+        formControlName="phone"
+        type="text"
+        id="phone" (keypress)="checkOnlyNumber($event)"
+      />
+      <p
+        *ngIf="
+          (employeeForm?.get('phone')?.touched || isSubmit) &&
+          !employeeForm.get('phone')?.valid && employeeForm.get('phone')?.errors && employeeForm.get('phone')?.hasError('required'); else invalidPhone
+        "
+        class="text-danger"
+      >
+        *Please enter your phone
+      </p>
+      <ng-template #invalidPhone>
+        <p class="text-danger" *ngIf="(employeeForm?.get('phone')?.touched || isSubmit) && employeeForm.get('phone')?.errors && employeeForm.get('phone')?.hasError('minlength')">
+          Please enter 10 Digit Valid Number
+        </p>
+      </ng-template>
+
+      <label class="form-label" for="username">Company</label>
+      <input
+        class="form-control"
+        formControlName="company"
+        type="text"
+        id="company"
+      />
+      <p
+        *ngIf="
+          (employeeForm?.get('company')?.touched || isSubmit) &&
+          !employeeForm.get('company')?.valid
+        "
+        class="text-danger"
+      >
+        *Please enter your company
+      </p>
+      <hr />
+      <div class="">
+        <p>Gender</p>
+        <div class="d-flex justify-content-start align-content-center gap-2">
+          <input
+            class="form-check"
+            type="radio"
+            id="male"
+            name="gender"
+            value="male"
+            formControlName="gender"
+          />
+          <label for="male">Male</label>
+        </div>
+        <div class="d-flex justify-content-start align-content-center gap-2">
+          <input
+            class="form-check"
+            type="radio"
+            id="gender"
+            name="gender"
+            value="female"
+            formControlName="gender"
+          />
+          <label for="female">Female</label>
+        </div>
+        <p
+          *ngIf="
+            (employeeForm?.get('gender')?.touched || isSubmit) &&
+            !employeeForm.get('gender')?.valid
+          "
+          class="text-danger"
+        >
+          Please select gender
+        </p>
+      </div>
+      <hr />
+
+      <div>
+        <div class="d-flex gap-2">
+          <label for="DOB" class="form-label">DOB : </label>
+          <input type="date" id="DOB" formControlName="dob" />
+        </div>
+        <p
+          *ngIf="
+            (employeeForm?.get('dob')?.touched || isSubmit) &&
+            !employeeForm.get('dob')?.valid
+          "
+          class="text-danger"
+        >
+          Please select DOB
+        </p>
+      </div>
+
+      <hr />
+      <label for="pass">Password</label>
+      <input
+        class="form-control"
+        type="password"
+        formControlName="password"
+        id="pass"
+      />
+      <p
+        *ngIf="
+          (employeeForm?.get('password')?.touched || isSubmit) &&
+          !employeeForm.get('password')?.valid
+        "
+        class="text-danger"
+      >
+        Please Enter Password
+      </p>
+
+      <label for="confirmpass">Confirm Password</label>
+      <input
+        class="form-control"
+        type="password"
+        formControlName="confirmPassword"
+        id="confirmpass"
+      />
+      <div
+        *ngIf="
+          (employeeForm?.get('confirmPassword')?.touched || isSubmit) &&
+          !employeeForm.get('confirmPassword')?.valid
+        "
+      >
+        <p
+          *ngIf="
+            employeeForm.get('confirmPassword')?.errors &&
+              employeeForm.get('confirmPassword')?.hasError('required');
+            else matchValidation
+          "
+          class="text-danger"
+        >
+          Please enter Confirm Password
+        </p>
+        <ng-template #matchValidation>
+          <p
+            *ngIf="
+              employeeForm.get('confirmPassword')?.errors &&
+              employeeForm.get('confirmPassword')?.hasError('passwordNotMatch')
+            "
+            class="text-danger"
+          >
+            Password is not matching
+          </p>
+        </ng-template>
+      </div>
+
+      <hr />
+      <div
+        class="row text-center d-flex justify-content-center align-content-between"
+      >
+        <button type="submit" class="btn btn-success w-25">
+          {{ buttonName }}
+        </button>
+        <button class="btn btn-danger w-25" id="cancel" type="reset" (click)="onCancel()" #cancelButton>Cancel</button>
+      </div>
+      <hr />
+    </form>
+  </div>
+</div>
+
+<div class="container mt-5 shadow-lg" *ngIf="employees.length > 0">
+  <table class="table">
+    <thead>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Company</th>
+      <th>Gender</th>
+      <th>DOB</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let employee of employees">
+        <td>
+          {{ employee.firstName }}
+        </td>
+        <td>
+          {{ employee.lastName }}
+        </td>
+        <td>
+          {{ employee.email }}
+        </td>
+        <td>
+          {{ employee.phone }}
+        </td>
+        <td>
+          {{ employee.company }}
+        </td>
+        <td>
+          {{ employee.gender }}
+        </td>
+        <td>
+          {{ employee.dob }}
+        </td>
+        <td>
+          <button class="btn btn-outline-info" (click)="onEdit(employee)">
+            Edit
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-outline-danger" (click)="onDelete(employee)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
